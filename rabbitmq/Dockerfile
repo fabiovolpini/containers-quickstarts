@@ -50,7 +50,6 @@ RUN set -xe && \
     chown -R 1001:0 /var/lib/rabbitmq /etc/rabbitmq ${RABBITMQ_HOME}/plugins && \
     chmod -R g=u /var/lib/rabbitmq /etc/rabbitmq && \
     rm -rf /var/lib/rabbitmq/.erlang.cookie && \
-    rm -rf /tmp/* && \
     ln -sf "$RABBITMQ_HOME/plugins" /plugins
 
 COPY docker-entrypoint.sh /usr/local/bin/
