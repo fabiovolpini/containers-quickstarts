@@ -16,5 +16,4 @@ get accept-0.3.3.ez
 get prometheus-3.4.3.ez
 get prometheus_httpd-2.1.8.ez
 get prometheus_process_collector-1.3.0.ez
-get prometheus_process_collector-1.3.0.FreeBSD.ez
 get prometheus_rabbitmq_exporter-v3.6.14.1.ez
