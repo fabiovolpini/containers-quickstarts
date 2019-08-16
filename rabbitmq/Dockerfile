@@ -14,7 +14,7 @@ ENV GPG_KEY="0A9AF2115F4687BD29803A206B73A36E6026DFCA" \
     RABBITMQ_HOME=/opt/rabbitmq \
     RABBITMQ_LOGS=- \
     RABBITMQ_SASL_LOGS=-
-
+ADD get-prometheus-plugin.sh /tmp
 RUN set -xe && \
     curl -LO https://github.com/rabbitmq/erlang-rpm/releases/download/v${ERLANG_VERSION}/erlang-${ERLANG_VERSION}-1.el7.x86_64.rpm && \
     rpm -Uvh ./erlang-${ERLANG_VERSION}-1.el7.x86_64.rpm && \
@@ -44,16 +44,13 @@ RUN set -xe && \
     adduser -u 1001 -r -c "RabbitMQ User" -d /var/lib/rabbitmq -g rabbitmq rabbitmq && \
     mkdir -p /var/lib/rabbitmq /etc/rabbitmq && \
     mv *.ez ${RABBITMQ_HOME}/plugins && \
-    cd /opt/rabbitmq/plugins && \
-    curl -LO https://github.com/deadtrickster/prometheus_rabbitmq_exporter/releases/download/v3.7.9.1/accept-0.3.5.ez && \
-    curl -LO https://github.com/deadtrickster/prometheus_rabbitmq_exporter/releases/download/v3.7.9.1/prometheus-4.3.0.ez && \
-    curl -LO https://github.com/deadtrickster/prometheus_rabbitmq_exporter/releases/download/v3.7.9.1/prometheus_cowboy-0.1.7.ez && \
-    curl -LO https://github.com/deadtrickster/prometheus_rabbitmq_exporter/releases/download/v3.7.9.1/prometheus_httpd-2.1.10.ez && \
-    curl -LO https://github.com/deadtrickster/prometheus_rabbitmq_exporter/releases/download/v3.7.9.1/prometheus_rabbitmq_exporter-3.7.9.1.ez && \
+    chmod +x /tmp/get-prometheus-plugin.sh && \
+    /tmp/get-prometheus-plugin.sh && \
     ${RABBITMQ_HOME}/sbin/rabbitmq-plugins enable autocluster rabbitmq_management prometheus_rabbitmq_exporter --offline && \
     chown -R 1001:0 /var/lib/rabbitmq /etc/rabbitmq ${RABBITMQ_HOME}/plugins && \
     chmod -R g=u /var/lib/rabbitmq /etc/rabbitmq && \
     rm -rf /var/lib/rabbitmq/.erlang.cookie && \
+    rm -rf /tmp/* && \
     ln -sf "$RABBITMQ_HOME/plugins" /plugins
 
 COPY docker-entrypoint.sh /usr/local/bin/
