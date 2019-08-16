@@ -26,7 +26,7 @@ RUN set -xe && \
     curl -Lo rabbitmq_aws.ez https://github.com/rabbitmq/rabbitmq-autocluster/releases/download/${RABBITMQ_AUTOCLUSTER_VERSION}/rabbitmq_aws-${RABBITMQ_AUTOCLUSTER_VERSION}.ez && \
     export GNUPGHOME="$(mktemp -d)" && \
     env | grep GNUPG && \
-    gpg --keyserver ha.pool.sks-keyservers.net --recv-keys "$GPG_KEY" && \
+    gpg --keyserver hkp://ha.pool.sks-keyservers.net:80 --recv-keys "$GPG_KEY" && \
     gpg --batch --verify rabbitmq-server.tar.xz.asc rabbitmq-server.tar.xz && \
     rm -rf "$GNUPGHOME" && \
     mkdir -p "$RABBITMQ_HOME" && \
