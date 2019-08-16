@@ -44,6 +44,7 @@ RUN set -xe && \
     adduser -u 1001 -r -c "RabbitMQ User" -d /var/lib/rabbitmq -g rabbitmq rabbitmq && \
     mkdir -p /var/lib/rabbitmq /etc/rabbitmq && \
     mv *.ez ${RABBITMQ_HOME}/plugins && \
+    chmod +x /tmp/get-prometheus-plugin.sh && \
     /tmp/get-prometheus-plugin.sh && \
     ${RABBITMQ_HOME}/sbin/rabbitmq-plugins enable autocluster rabbitmq_management prometheus_rabbitmq_exporter --offline && \
     chown -R 1001:0 /var/lib/rabbitmq /etc/rabbitmq ${RABBITMQ_HOME}/plugins && \
